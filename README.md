@@ -1,85 +1,21 @@
-# JsonAnnotation  
-JsonAnnotation can **speed up** Android development.  
-It generates gson model class by json string automatically and lets you concentrate on what's really important.    
+# Json2JavaModel
+此项目fork自[JsonAnnotation](https://github.com/tianzhijiexian/JsonAnnotation)
 
-### Demo   
-1.Copy url and json string into JsonAnnotation  
-![](./demo/api_json.png)  
-2.Just write a jsonModel name  
-![](./demo/jsonModel.png)  
-3.Build the project  
-(->Make Project)  
-![](./demo/build.png)  
-Then you can use UserInfo to do something~  
+## 目标
+提供一个批处理JSON转JavaModel的工具。
 
-**GIF Demo**  
-Picture is big,wait a minute...  
-![](./demo/json2Model.gif)  
+### 输入
+1. JSON字符串J
+2. J的类名
+3. J的包名
+4. J的基类名
 
-### Usage  
-1.Add apt in **project's build.gradle**  
-[apt][https://bitbucket.org/hvisser/android-apt]
-```
-	dependencies {
-    	//...
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
-    }
-```
-2.Add apt plugin below `apply plugin: 'com.android.application'`  
-```
-apply plugin: 'android-apt'
-```
-3.add jsonAnnotation.jar in lib  
-![](./demo/lib.png)  
+### 输出
+1. java model类
 
-Download Jar:[https://github.com/tianzhijiexian/JsonAnnotation/blob/master/lib/build/libs/lib.jar](https://github.com/tianzhijiexian/JsonAnnotation/blob/master/lib/build/libs/lib.jar)
+### 原则
+1. 每次转化的JSON共用同一个的包名。
+2. JSON Key的名字一致，则对应的类一致。
 
-
-### Question  
-```JAVA
-@Json2Model(modelName = "UserInfo",jsonStr = "{\n"
-            + "    \"id\": 100,\n"
-            + "    \"body\": \"It is my post\",\n"
-            + "    \"number\": 0.13,\n"
-            + "    \"created_at\": \"2014-05-22 19:12:38\"\n"
-            + "}")
-    String SEARCH_URSER_INFO = "search/user"; // api url
-```  
-
-**1. Why we need build project?**  
-Unfortunately,Android does not(yet)understand the concept of a compile-time-only dependency, so you need to mess with your build files to make it work.  
-
-**2. Efficiency**  
-@Json2Model will run in compile-time and models are created before generate apk file.Using JsonAnnotation,developers can let it generate the plumbing code at compile time.Reflect is not in this project,you needn't worry about efficiency questions.  
-
-**3. Where are models**  
-@Json2Model will create models is out of your own project.You can find theme in:  
-`app(your model name)/build/generated/source/apt/debug/...`  
-![](./demo/model.png)  
-You should edit these models by edit your jsonString.  
-
-JsonAnnotation is less than 40kb,try it now~  
-
-similar project: [https://projectlombok.org/]
-
-### Developer
-![](https://avatars3.githubusercontent.com/u/9552155?v=3&s=460)  
-Jack Tony: <developer_kale@qq.com>  
-![](https://avatars2.githubusercontent.com/u/5378647?v=3&s=200)  
-zzz40500： <wyh405003836@126.com>  
-
-### License
-
-    Copyright 2015 Jack Tony
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+### 使用步骤
+正在开发中...
