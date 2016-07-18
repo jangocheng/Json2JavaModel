@@ -1,5 +1,19 @@
 package com.jsonformat;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+
+import javax.annotation.processing.Filer;
+import javax.lang.model.element.TypeElement;
+import javax.tools.Diagnostic;
+import javax.tools.FileObject;
+import javax.tools.JavaFileObject;
+import javax.tools.SimpleJavaFileObject;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -144,16 +158,55 @@ public class Main {
 
         JsonParserHelper jsonParser = new JsonParserHelper();
 
-        jsonParser.parse(jsonStr, "RootClass", new JsonParserHelper.ParseListener() {
-            @Override
+        final String packageName = "panda";
+        final String clsName = "Test";
+        jsonParser.parse(jsonStr, clsName, new JsonParserHelper.ParseListener() {
             public void onParseComplete(String str) {
-                System.out.println(str);
+                createModelClass(packageName, clsName, "package " + packageName + ";\n" + str);
             }
 
-            @Override
             public void onParseError(Exception e) {
-                System.err.println(e.getMessage());
+                e.printStackTrace();
+                fatalError(e.getMessage());
             }
         });
+        log("Complete on: ");
+    }
+
+    private static void createModelClass(String packageName, String clsName, String content) {
+        //PackageElement pkgElement = elementUtils.getPackageElement("");
+
+        //TODO content内容需要分类class内容
+        OutputStreamWriter osw = null;
+        try {
+            // create a model file
+            OutputStream os = new FileOutputStream(new File(clsName+".java"));
+            osw = new OutputStreamWriter(os, Charset.forName("UTF-8"));
+            osw.write(content, 0, content.length());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            fatalError(e.getMessage());
+        } finally {
+            try {
+                if (osw != null) {
+                    osw.flush();
+                    osw.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                fatalError(e.getMessage());
+            }
+        }
+    }
+
+    private static void log(String msg) {
+        System.out.println(msg);
+//        processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, TAG + msg);
+    }
+
+    private static void fatalError(String msg) {
+        System.out.println(msg);
+//        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, TAG + " FATAL ERROR: " + msg);
     }
 }
